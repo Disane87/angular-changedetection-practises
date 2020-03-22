@@ -9,11 +9,13 @@ import { MarkForCheckComponent } from './mark-for-check/mark-for-check.component
 import { DialogsComponent } from './dialogs/dialogs.component';
 
 import { NavigationRoute } from '../_interfaces/navigation-route.interface';
+import { ScrollspyComponent } from './scrollspy/scrollspy.component';
 
 const appRoutes: Array<NavigationRoute> = [
   { path: 'start', component: StarterComponent, displayName: "Start" },
   { path: 'onPush', component: OnPushComponent, displayName: "ChangeDetection" },
-  { path: 'dialogs', component: DialogsComponent, displayName: "dialogs"},
+  { path: 'dialogs', component: DialogsComponent, displayName: "Dialogs"},
+  { path: 'scrollspy', component: ScrollspyComponent, displayName: "Scrollspy"},
   { path: 'onPush', component: OnPushComponent, outlet: 'dialog' },
 ];
 
@@ -21,7 +23,7 @@ const appRoutes: Array<NavigationRoute> = [
   imports: [
     CommonModule, FormsModule, RouterModule.forChild(appRoutes), 
   ],
-  declarations: [StarterComponent, OnPushComponent, MarkForCheckComponent, DialogsComponent],
+  declarations: [StarterComponent, OnPushComponent, MarkForCheckComponent, DialogsComponent, ScrollspyComponent],
   exports: [StarterComponent, OnPushComponent]
 })
 export class ViewsModule { }
