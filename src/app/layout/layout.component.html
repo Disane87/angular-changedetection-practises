@@ -30,14 +30,14 @@
 	</div>
 
 	<div class="d-flex flex-row flex-fill py-3 overflow-hidden">
-		<div class="card ml-3 mw-25 w-25" style="min-width: 25%">
+		<div class="card ml-3 mw-25 w-25 " style="min-width: 25%">
 
 			<div class="card-header d-flex justify-content-between">
 				<span class="my-auto">Logger</span>
 				<button class="btn btn-info btn-sm" (click)="logService.clear()">clear</button>
 			</div>
 
-			<ul class="list-group list-group-flush" *ngIf="(logService.logChanged$ | async) as logItems else noLogs">
+			<ul class="list-group list-group-flush  overflow-y-auto" *ngIf="(logService.logChanged$ | async) as logItems else noLogs">
 				<li class="list-group-item p-0">
 					<div class="input-group">
 						<div class="input-group-prepend">
@@ -59,7 +59,7 @@
 			</ng-template>
 
 		</div>
-		<div class="content container flex-fill">
+		<div class="content container flex-fill overflow-x-hidden overflow-y-auto">
 			<router-outlet></router-outlet>
 		</div>
 	</div>

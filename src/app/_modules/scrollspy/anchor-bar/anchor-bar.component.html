@@ -1,0 +1,5 @@
+<div class="scrollspy-buttons btn-group mb-3 flex-wrap sticky-top" role="group" aria-label="Basic example">
+	<ng-container *ngFor="let anchor of anchors | async; let last = last">
+		<button class="btn btn-danger rounded-0" [class.active]="anchor.active" (click)="scrollTo(anchor)">{{anchor.displayName}}</button>
+	</ng-container>
+</div>

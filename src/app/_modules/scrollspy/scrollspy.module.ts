@@ -11,6 +11,7 @@ export {}
     CommonModule
   ],
   declarations: [AnchorDirective, AnchorBarComponent],
-  providers: [ScrollspyService]
+  providers: [ScrollspyService],
+  exports: [AnchorDirective, AnchorBarComponent]
 })
 export class ScrollspyModule { }

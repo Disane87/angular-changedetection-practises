@@ -11,6 +11,10 @@ import { DialogsComponent } from './dialogs/dialogs.component';
 import { NavigationRoute } from '../_interfaces/navigation-route.interface';
 import { ScrollspyComponent } from './scrollspy/scrollspy.component';
 
+import { RepeatByRangeDirective } from '../_directives/repeat-by-range.directive';
+
+import { ScrollspyModule } from '../_modules/scrollspy/scrollspy.module';
+
 const appRoutes: Array<NavigationRoute> = [
   { path: 'start', component: StarterComponent, displayName: "Start" },
   { path: 'onPush', component: OnPushComponent, displayName: "ChangeDetection" },
@@ -21,10 +25,10 @@ const appRoutes: Array<NavigationRoute> = [
 
 @NgModule({
   imports: [
-    CommonModule, FormsModule, RouterModule.forChild(appRoutes), 
+    CommonModule, FormsModule, RouterModule.forChild(appRoutes), ScrollspyModule
   ],
-  declarations: [StarterComponent, OnPushComponent, MarkForCheckComponent, DialogsComponent, ScrollspyComponent],
-  exports: [StarterComponent, OnPushComponent]
+  declarations: [StarterComponent, OnPushComponent, MarkForCheckComponent, DialogsComponent, ScrollspyComponent, RepeatByRangeDirective],
+  exports: [StarterComponent, OnPushComponent, ScrollspyModule]
 })
 export class ViewsModule { }
 

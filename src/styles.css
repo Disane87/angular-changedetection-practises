@@ -16,6 +16,14 @@ router-outlet + * {
   cursor: pointer;
 }
 
+.overflow-x-hidden {
+  overflow-x: hidden;
+}
+
+.overflow-y-auto {
+  overflow-y: auto;
+}
+
 .backdrop {
     position: fixed;
     top: 0;
