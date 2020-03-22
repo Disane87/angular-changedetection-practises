@@ -1,0 +1,27 @@
+/* Add application styles & imports to this file! */
+html {
+  height: 100vH;
+  width: 100vW;
+  /* overflow: hidden; */
+  /* cursor: pointer; */
+  cursor: default;
+}
+
+router-outlet + * {
+  width: 100%;
+  /* background: red; */
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.backdrop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, .5);
+}

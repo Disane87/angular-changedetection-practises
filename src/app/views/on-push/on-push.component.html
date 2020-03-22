@@ -1,0 +1,32 @@
+<div class="container border p-3 rounded">
+	<!-- <div class="mb-3">onPush-Component</div> -->
+	<input type="text" [(ngModel)]="user.name" class="form-control mb-3" placeholder="Vorname" aria-label="Username" aria-describedby="basic-addon1">
+
+	<!-- <input type="text" [(ngModel)]="user.surname" class="form-control mb-3" placeholder="Nachname" aria-label="Username" aria-describedby="basic-addon1"> -->
+
+	<div class="btn-toolbar " role="toolbar" aria-label="Toolbar with button groups">
+		<div class="btn-group mr-2 my-auto w-100 align-items-center" role="group" aria-label="First group">
+			<button class="btn btn-danger mb-3" (click)="changeUsername(false)">Change username</button>
+			<button class="btn btn-success mb-3" (click)="toggleChangeDetection()">
+        <span *ngIf="cdDetached">Reattach CD</span>
+        <span *ngIf="!cdDetached">Detach CD </span>
+      </button>
+			<button class="btn btn-warning mb-3" (click)="executeCd()">detectChanges</button>
+			<button class="btn btn-primary mb-3" (click)="startChangeTimer()">
+    <span *ngIf="!timerStarted">Start</span> 
+    <span *ngIf="timerStarted">Stop</span> 
+    timer
+  </button>
+		</div>
+	</div>
+
+
+
+	<div class="card card-body bg-light">
+		<pre class="m-0"><code>{{ user | json }}</code></pre>
+	</div>
+
+	<!-- <app-on-push *ngIf="user == null"></app-on-push> -->
+
+	<app-mark-for-check></app-mark-for-check>
+</div>

@@ -1,0 +1,6 @@
+.nav-item {
+  // margin: none;
+  &.active {
+    border-bottom: 2px solid var(--danger);
+  }
+}

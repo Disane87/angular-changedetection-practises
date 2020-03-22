@@ -1,0 +1,68 @@
+<div class="d-flex flex-column h-100 ">
+	<nav class="navbar navbar-light bg-light border-bottom navbar-expand">
+		<a class="navbar-brand" routerLink="">Angular Practises</a>
+
+
+		<div class="collapse navbar-collapse">
+			<ul class="navbar-nav mr-auto">
+
+				<ng-container *ngFor="let route of routes">
+					<li class="nav-item cursor-pointer" routerLinkActive="active" [routerLink]="route.path"
+						*ngIf="route.path != ''">
+						<div class="nav-link text-capitalize">
+							{{ route.displayName }}
+						</div>
+					</li>
+				</ng-container>
+
+			</ul>
+
+			<button class="btn btn-danger" (click)="toggleFullscreen()">
+        <span *ngIf="fullscreen">Minimize</span>
+        <span *ngIf="!fullscreen">Fullscreen</span>
+      </button>
+
+		</div>
+	</nav>
+
+	<div class="alert alert-danger mt-3 mb-0 mx-3" role="alert" *ngIf="fullscreen">
+		⚠ Attention, this application is in fullscreen mode
+	</div>
+
+	<div class="d-flex flex-row flex-fill py-3 overflow-hidden">
+		<div class="card ml-3 mw-25 w-25" style="min-width: 25%">
+
+			<div class="card-header d-flex justify-content-between">
+				<span class="my-auto">Logger</span>
+				<button class="btn btn-info btn-sm" (click)="logService.clear()">clear</button>
+			</div>
+
+			<ul class="list-group list-group-flush" *ngIf="(logService.logChanged$ | async) as logItems else noLogs">
+				<li class="list-group-item p-0">
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text border-0 rounded-0" id="basic-addon1">🔎</span>
+						</div>
+						<input type="text" class="form-control border-0" [(ngModel)]="searchText" placeholder="Search..." aria-label="Username" aria-describedby="basic-addon1">
+          </div>
+				</li>
+				<ng-container *ngFor="let logItem of logItems | search: searchText : 'component'">
+					<li class="list-group-item">
+						<code>{{ logItem.component }}.{{ logItem.fn }}()</code>
+						<!-- <span class="ml-1 small">{{ logItem.message }}</span> -->
+					</li>
+				</ng-container>
+			</ul>
+
+			<ng-template #noLogs>
+				<div class="no-logs p-3" #noLogs>No logs</div>
+			</ng-template>
+
+		</div>
+		<div class="content container flex-fill">
+			<router-outlet></router-outlet>
+		</div>
+	</div>
+</div>
+
+<app-dialog></app-dialog>
