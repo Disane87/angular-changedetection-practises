@@ -30,16 +30,12 @@ export class AnchorBarComponent implements OnInit {
       map(this.filterAllAnchorsByScrollcontainer),
       map(this.markAllAnchorsAsVisible)
     );
-
-    
-
-// debugger;
     
     fromEvent(this._scrollParentElement, 'scroll').subscribe(event => {
       this.markAnchorsAsVisible(this.scrollSpyService.anchorSnapshot.filter(this.filterAnchorsInScrollContainer));
       // console.log(`${this._scrollParentElement.id} scrolled`, event);
-      const scrolledDisctance = this._scrollParentElement.scrollTop;
-      this.toggleScrollToTopVisibility(scrolledDisctance > 0)
+      const scrolledDistance = this._scrollParentElement.scrollTop;
+      this.toggleScrollToTopVisibility(scrolledDistance > 0)
     
     });
   }
