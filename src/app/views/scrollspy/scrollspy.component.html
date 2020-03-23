@@ -1,26 +1,26 @@
-<scrollspy-anchor-bar></scrollspy-anchor-bar>
-
-<!-- <div class="card mb-3" *repeatByRange="{start: 1, end: 10}; let i" 
-scrollspyAnchor="Featured {{i}}">  <div class="card-header">
-    Featured {{i}}
-  </div>
-  <div class="card-body">
-    <h5 class="card-title">Special title treatment</h5>
-    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
-  </div>
-</div> -->
-
-<div class="bla" *repeatByRange="{start: 1, end: 20}; let i" scrollspyAnchor="Featured {{i}}">
-	<h1>Featured {{i}}</h1>
-	<div class="card mb-3">
-		<div class="card-header">
-			Featured {{i}}
-		</div>
-		<div class="card-body">
-			<h5 class="card-title">Special title treatment</h5>
-			<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-			<a href="#" class="btn btn-primary">Go somewhere</a>
-		</div>
+<div class="d-flex flex-row overflow-hidden h-100">
+	<div class="column1 flex-fill mr-3 overflow-auto" id="scroll1">
+		<ng-container *ngTemplateOutlet="rows; context: {name: 'Col1'}"></ng-container>
+	</div>
+	<div class="column2 flex-fill overflow-y-auto" id="scroll2">
+		<ng-container *ngTemplateOutlet="rows; context: {name: 'Col2'}"></ng-container>
 	</div>
 </div>
+
+<ng-template #rows let-name="name">
+	<scrollspy-anchor-bar></scrollspy-anchor-bar>
+
+	<div class="bla" *repeatByRange="{start: 1, end: 20}; let i" scrollspyAnchor="{{name}} {{i}}">
+		<h1>{{name}} {{i}}</h1>
+		<div class="card mb-3">
+			<div class="card-header">
+				{{name}} {{i}}
+			</div>
+			<div class="card-body">
+				<h5 class="card-title">Special title treatment</h5>
+				<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+				<a href="#" class="btn btn-primary">Go somewhere</a>
+			</div>
+		</div>
+	</div>
+</ng-template>

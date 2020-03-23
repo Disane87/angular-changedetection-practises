@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef } from "@angular/core";
+import { Component, OnInit, ElementRef, ChangeDetectorRef, ChangeDetectionStrategy } from "@angular/core";
 import { ScrollspyService, Anchor } from "../scrollspy.service";
 import { Observable, fromEvent } from "rxjs";
 import { map } from 'rxjs/operators'
@@ -6,42 +6,53 @@ import { map } from 'rxjs/operators'
 @Component({
   selector: "scrollspy-anchor-bar",
   templateUrl: "./anchor-bar.component.html",
-  styleUrls: ["./anchor-bar.component.css"]
+  styleUrls: ["./anchor-bar.component.css"],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AnchorBarComponent implements OnInit {
   constructor(
     private el: ElementRef,
-    private scrollSpyService: ScrollspyService
+    private scrollSpyService: ScrollspyService,
+    private cd: ChangeDetectorRef
   ) {}
 
   public anchors: Observable<Array<Anchor>>;
 
   public scrollSpyButtonContainerClass = "scrollspy-buttons";
+  private _scrollParentElement: HTMLElement;
 
   ngOnInit() {
-    this.anchors = this.scrollSpyService.anchors.pipe(map(anchors => this.markAnchorsAsVisible(anchors)));
+    this._scrollParentElement = this.scrollSpyService.getScrollParent(this.el.nativeElement);
+    this.anchors = this.scrollSpyService.anchors.pipe(
+      map(this.filterAllAnchorsByScrollcontainer),
+      map(this.markAllAnchorsAsVisible)
+    );
 
-    const scrollParent = this.scrollSpyService.getScrollParent(this.el.nativeElement);
+// debugger;
     
-    fromEvent(scrollParent, 'scroll').subscribe((event) => {
-      this.markAnchorsAsVisible(this.scrollSpyService.anchorSnapshot);
+    fromEvent(this._scrollParentElement, 'scroll').subscribe((event) => {
+      this.markAnchorsAsVisible(this.scrollSpyService.anchorSnapshot.filter(this.filterAnchorsInScrollContainer));
     });
   }
 
 
+  private filterAnchorsInScrollContainer = (anchor: Anchor) =>  (anchor.scrollParent as HTMLElement).id == this._scrollParentElement.id;
+  private markAllAnchorsAsVisible = (anchors: Array<Anchor>) => this.markAnchorsAsVisible(anchors);
+  private filterAllAnchorsByScrollcontainer = (anchors: Array<Anchor>) => anchors.filter(this.filterAnchorsInScrollContainer);
+  private getActiveAnchor = (anchor: Anchor) => anchor.active;
+  private getAllVisibleAnchorsAfterFirst =  (anchors: Array<Anchor>, firstActiveAnchors: Anchor) => anchors.filter(anchor => anchor.key != firstActiveAnchors.key && anchor.active).map(anchor => anchor.active = false)
+  private getFirstAnchor =  (anchors: Array<Anchor>) => anchors.find(this.getActiveAnchor)
 
-  markAnchorsAsVisible(anchors: Array<Anchor>): Array<Anchor>{
-    anchors.forEach(anchorElement => {
-        anchorElement.active = this.isScrolledIntoView(anchorElement.nativeElement);
-    })
-
-    const firstActiveAnchors = anchors.find(anchor => anchor.active);
-    const lastActiveAnchors = anchors.filter(anchor => anchor.key != firstActiveAnchors.key && anchor.active);
-    lastActiveAnchors.forEach(anchor => anchor.active = false);
+  private markAnchorsAsVisible(anchors: Array<Anchor>): Array<Anchor>{
+    for(let anchor of anchors){
+      anchor.active = this.isScrolledIntoView(anchor.nativeElement);
+    }
+    const lastActiveAnchors = this.getAllVisibleAnchorsAfterFirst(anchors, this.getFirstAnchor(anchors));
+    this.cd.detectChanges();
     return anchors;
   }
 
-  isScrolledIntoView(el: HTMLElement) {
+  private isScrolledIntoView(el: HTMLElement) {
     var rect = el.getBoundingClientRect();
     var elemTop = rect.top;
     var elemBottom = rect.bottom;
@@ -53,14 +64,13 @@ export class AnchorBarComponent implements OnInit {
     return isVisible;
   }
 
-  scrollTo(anchor: Anchor) {
+  public scrollTo(anchor: Anchor) {
 
-    const parentScrollableContainer = anchor.scrollParent;
+    const parentScrollableContainer = anchor.scrollParent as HTMLElement;
     const nativeElement = this.el.nativeElement;
     let scrollDistance = anchor.nativeElement.offsetTop;
 
-    const scrollSpyButtonContainer = parentScrollableContainer
-      .querySelector(`.${this.scrollSpyButtonContainerClass}`) as HTMLElement;
+    const scrollSpyButtonContainer = parentScrollableContainer.querySelector(`.${this.scrollSpyButtonContainerClass}`) as HTMLElement;
     const scrollSpyButtonHeight = this.outerHeight(scrollSpyButtonContainer);
 
     // const elementAndButtonDifference = scrollSpyButtonHeight - 
