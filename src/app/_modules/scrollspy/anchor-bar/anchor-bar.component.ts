@@ -123,4 +123,10 @@ export class AnchorBarComponent implements OnInit {
 
     return marginsAndPaddings;
   }
+
+  
+
+  ngOnDestroy(){
+    this.scrollSpyService.removeScrollAnchorsByScrollContainerId(this._scrollParentElement.id);
+  }
 }

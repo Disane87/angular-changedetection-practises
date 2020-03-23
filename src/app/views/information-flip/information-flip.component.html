@@ -1,0 +1,7 @@
+<div class="card">
+  <div class="card-body">
+    <ng-container *ngFor="let information of informations">
+      <div [class.d-none]="!information.visible" [class.flip-in]="information.visible" [class.flip-out]="!information.visible">{{ information.text }}</div>
+    </ng-container>
+  </div>
+</div>

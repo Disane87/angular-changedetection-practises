@@ -30,6 +30,11 @@ export class ScrollspyService {
     this.anchors.next(this._anchors);
   }
 
+  public removeScrollAnchorsByScrollContainerId(scrollContainerId: string){
+    this._anchors = this.anchorSnapshot.filter(anchor => (anchor.scrollParent as HTMLElement).id != scrollContainerId)
+    this.updateAnchors();
+  }
+
   public getScrollParent(node) {
     /** Adapted by https://stackoverflow.com/a/49186677/5773586 */
     const regex = /(auto|scroll)/;
@@ -42,7 +47,7 @@ export class ScrollspyService {
 
     const style = (_node, prop) =>
       getComputedStyle(_node, null).getPropertyValue(prop);
-      
+
     const overflow = _node =>
       style(_node, "overflow") +
       style(_node, "overflow-y") +

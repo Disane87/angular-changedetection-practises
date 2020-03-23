@@ -9,7 +9,7 @@ export class LoggerService {
 
   constructor() { 
     // super();
-    console = this;
+    // console = this;
   }
 
   public error(component: string, fn: string, message: string, severity: LogSeverity = 'error'){
