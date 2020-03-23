@@ -14,23 +14,23 @@ export class AnchorDirective {
 
   ngOnInit(): void {
     let currentAnchor: Anchor;
+    const scrollingContainer = this.scrollSpyService.getScrollParent(this.el.nativeElement);
+
     if (typeof this.anchor == "string") {
       currentAnchor = {
         key: this.cleanString(this.anchor.toLowerCase()),
         displayName: this.anchor,
         nativeElement: this.el.nativeElement,
         active: false,
-        scrollParent: this.getScrollParent(this.el.nativeElement)
+        scrollParent: scrollingContainer,
+        visible: false
       };
+
     } else {
       currentAnchor = this.anchor;
     }
 
-
-    const scrollingContainer = this.getScrollParent(this.el.nativeElement);
-
     this.el.nativeElement.id = currentAnchor.key;
-
     this.scrollSpyService.addAnchor(currentAnchor);
   }
 
@@ -39,42 +39,5 @@ export class AnchorDirective {
     return name.trim().replace(cleanPattern, "");
   }
 
-  public getScrollParent(node) {
-    /** Adapted by https://stackoverflow.com/a/49186677/5773586 */
-    const regex = /(auto|scroll)/;
-    const parents = (_node, ps) => {
-      if (_node.parentNode === null) {
-        return ps;
-      }
-      return parents(_node.parentNode, ps.concat([_node]));
-    };
-
-    const style = (_node, prop) =>
-      getComputedStyle(_node, null).getPropertyValue(prop);
-    const overflow = _node =>
-      style(_node, "overflow") +
-      style(_node, "overflow-y") +
-      style(_node, "overflow-x");
-    const scroll = _node => regex.test(overflow(_node));
-
-    /* eslint-disable consistent-return */
-    const scrollParent = _node => {
-      if (!(_node instanceof HTMLElement || _node instanceof SVGElement)) {
-        return;
-      }
-
-      const ps = parents(_node.parentNode, []);
-
-      for (let i = 0; i < ps.length; i += 1) {
-        if (scroll(ps[i])) {
-          return ps[i];
-        }
-      }
-
-      return document.scrollingElement || document.documentElement;
-    };
-
-    return scrollParent(node);
-    /* eslint-enable consistent-return */
-  }
+  
 }
