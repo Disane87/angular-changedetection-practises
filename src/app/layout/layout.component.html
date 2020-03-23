@@ -9,7 +9,7 @@
 				<ng-container *ngFor="let route of routes">
 					<li class="nav-item cursor-pointer" routerLinkActive="active" [routerLink]="route.path"
 						*ngIf="route.path != ''">
-						<div class="nav-link text-capitalize">
+						<div class="nav-link text-capitalize text-truncate">
 							{{ route.displayName }}
 						</div>
 					</li>
