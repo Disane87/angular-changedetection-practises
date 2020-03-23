@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ChangeDetectorRef, ChangeDetectionStrategy } from "@angular/core";
+import { Component, OnInit, ElementRef, ChangeDetectorRef, ChangeDetectionStrategy, Renderer2, ViewChild, TemplateRef } from "@angular/core";
 import { ScrollspyService, Anchor } from "../scrollspy.service";
 import { Observable, fromEvent } from "rxjs";
 import { map } from 'rxjs/operators'
@@ -13,8 +13,11 @@ export class AnchorBarComponent implements OnInit {
   constructor(
     private el: ElementRef,
     private scrollSpyService: ScrollspyService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private renderer: Renderer2
   ) {}
+
+  @ViewChild('scrollToTop', {static: false, read: ElementRef}) scrollToTop: ElementRef;
 
   public anchors: Observable<Array<Anchor>>;
 
@@ -28,11 +31,31 @@ export class AnchorBarComponent implements OnInit {
       map(this.markAllAnchorsAsVisible)
     );
 
+    
+
 // debugger;
     
-    fromEvent(this._scrollParentElement, 'scroll').subscribe((event) => {
+    fromEvent(this._scrollParentElement, 'scroll').subscribe(event => {
       this.markAnchorsAsVisible(this.scrollSpyService.anchorSnapshot.filter(this.filterAnchorsInScrollContainer));
+      // console.log(`${this._scrollParentElement.id} scrolled`, event);
+      const scrolledDisctance = this._scrollParentElement.scrollTop;
+      this.toggleScrollToTopVisibility(scrolledDisctance > 0)
+    
     });
+  }
+
+  private toggleScrollToTopVisibility(visible: boolean){
+    if(visible){
+        this.renderer.removeClass(this.scrollToTop.nativeElement, "d-none");
+        this.renderer.addClass(this.scrollToTop.nativeElement, "d-flex")
+      } else {
+        this.renderer.addClass(this.scrollToTop.nativeElement, "d-none");
+        this.renderer.removeClass(this.scrollToTop.nativeElement, "d-flex")
+      }
+  }
+
+  ngAfterViewInit(){
+    this.renderer.appendChild(this._scrollParentElement, this.scrollToTop.nativeElement);
   }
 
 
@@ -65,23 +88,27 @@ export class AnchorBarComponent implements OnInit {
   }
 
   public scrollTo(anchor: Anchor) {
-
-    const parentScrollableContainer = anchor.scrollParent as HTMLElement;
-    const nativeElement = this.el.nativeElement;
     let scrollDistance = anchor.nativeElement.offsetTop;
 
-    const scrollSpyButtonContainer = parentScrollableContainer.querySelector(`.${this.scrollSpyButtonContainerClass}`) as HTMLElement;
+    const scrollSpyButtonContainer = this._scrollParentElement.querySelector(`.${this.scrollSpyButtonContainerClass}`) as HTMLElement;
     const scrollSpyButtonHeight = this.outerHeight(scrollSpyButtonContainer);
 
     // const elementAndButtonDifference = scrollSpyButtonHeight - 
 
     scrollDistance = scrollDistance - scrollSpyButtonHeight - 75;
-    parentScrollableContainer.scrollTo({
+    this._scrollParentElement.scrollTo({
       top: scrollDistance,
       behavior: "smooth"
     });
 
     this.scrollSpyService.activateAnchor(anchor.key);
+  }
+
+  public scrollContainerToTop(){
+    this._scrollParentElement.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
   }
 
   outerHeight(element: HTMLElement): number {

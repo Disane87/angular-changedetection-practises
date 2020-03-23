@@ -3,3 +3,5 @@
 		<button class="btn btn-danger rounded-0" [class.active]="anchor.active" (click)="scrollTo(anchor)">{{anchor.displayName}}</button>
 	</ng-container>
 </div>
+
+<div class="scroll-to-top rounded-circle position-sticky d-none flex-column text-white backdrop text-center p-0 m-0 justify-content-center ml-auto mb-2 mr-2" style="width: 35px; height: 35px;"  #scrollToTop (click)="scrollContainerToTop()">^</div>
