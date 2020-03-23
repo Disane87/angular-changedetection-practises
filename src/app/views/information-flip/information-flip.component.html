@@ -1,7 +1,26 @@
-<div class="card">
-  <div class="card-body">
-    <ng-container *ngFor="let information of informations">
-      <div [class.d-none]="!information.visible" [class.flip-in]="information.visible" [class.flip-out]="!information.visible">{{ information.text }}</div>
-    </ng-container>
+<div class="card mb-3">
+	<div class="card-body">
+		<ng-container *ngFor="let information of informations">
+			<div [class.d-none]="!information.visible" [class.flip-in]="information.visible"
+				[class.flip-out]="!information.visible">{{ information.text }}</div>
+		</ng-container>
+	</div>
+</div>
+<h4>Informations</h4>
+<ul class="list-group mt-3">
+	<li class="list-group-item transition-all-ease-500ms" [class.list-group-item-success]="information.visible"
+		[class.list-group-item-danger]="!information.visible" *ngFor="let information of informations">
+		{{ information.text }}</li>
+
+	<li>
+
+		<div class="input-group mb-3 border-0">
+
+			<input type="text" class="form-control rounded-0 border-top-0" placeholder="Add information" aria-label="Username" [(ngModel)]="addedInformation"  aria-describedby="basic-addon1">
+        <div class="input-group-append">
+    <button class="btn btn-outline-secondary" (click)="addInformation(addedInformation)" type="button">Add</button>
   </div>
 </div>
+		
+	</li>
+</ul>

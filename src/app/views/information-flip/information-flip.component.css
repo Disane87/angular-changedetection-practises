@@ -5,6 +5,10 @@
 .flip-out {
 	animation: flip-out 0.45s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
 }
+
+.transition-all-ease-500ms {
+  transition: all ease 500ms;
+}
  
 @keyframes flip-in {
   0% {

@@ -16,6 +16,7 @@ export class InformationFlipComponent implements OnInit {
   }];
 
   private infoInterval: Subscription;
+  public addedInformation: string;
 
   constructor(private cd: ChangeDetectorRef) { }
 
@@ -40,6 +41,11 @@ export class InformationFlipComponent implements OnInit {
 
   ngOnDestroy(){
     this.infoInterval.unsubscribe();
+  }
+
+  addInformation(text: string){
+    this.informations.push({ text: text, visible: false});
+    this.addedInformation = null;
   }
 
 }
