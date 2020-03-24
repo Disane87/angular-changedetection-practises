@@ -15,6 +15,7 @@ import { RepeatByRangeDirective } from '../_directives/repeat-by-range.directive
 
 import { ScrollspyModule } from '../_modules/scrollspy/scrollspy.module';
 import { InformationFlipComponent } from './information-flip/information-flip.component';
+import { TourComponent } from './tour/tour.component';
 
 const appRoutes: Array<NavigationRoute> = [
   { path: 'start', component: StarterComponent, displayName: "Start" },
@@ -22,14 +23,15 @@ const appRoutes: Array<NavigationRoute> = [
   { path: 'dialogs', component: DialogsComponent, displayName: "Dialogs"},
   { path: 'scrollspy', component: ScrollspyComponent, displayName: "Scrollspy"},
   { path: 'onPush', component: OnPushComponent, outlet: 'dialog' },
-  { path: 'information-flip', component: InformationFlipComponent, displayName: 'Flip-Information' }
+  { path: 'information-flip', component: InformationFlipComponent, displayName: 'Flip-Information' },
+  { path: 'tour', component: TourComponent, displayName: 'Tour' }
 ];
 
 @NgModule({
   imports: [
     CommonModule, FormsModule, RouterModule.forChild(appRoutes), ScrollspyModule
   ],
-  declarations: [StarterComponent, OnPushComponent, MarkForCheckComponent, DialogsComponent, ScrollspyComponent, RepeatByRangeDirective, InformationFlipComponent],
+  declarations: [StarterComponent, OnPushComponent, MarkForCheckComponent, DialogsComponent, ScrollspyComponent, RepeatByRangeDirective, InformationFlipComponent, TourComponent],
   exports: [StarterComponent, OnPushComponent, ScrollspyModule]
 })
 export class ViewsModule { }

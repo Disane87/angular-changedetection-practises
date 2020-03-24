@@ -1,11 +1,12 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { interval, Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-information-flip',
   templateUrl: './information-flip.component.html',
-  styleUrls: ['./information-flip.component.css']
+  styleUrls: ['./information-flip.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InformationFlipComponent implements OnInit {
 
